@@ -1,31 +1,36 @@
 <template>
-  <div class="app"> 
-    <form @submit.prevent>
-      <h4>Создание поста</h4>
-      <input
-        v-bind:value="title"
-        @input="title = $event.target.value"
-        class="input" type="text"
-        placeholder="Название поста"
-      >
-      <input
-       v-bind:value="body"
-       @input="body = $event.target.value"
-       class="input"
-       type="text"
-       placeholder="Описание поста"
-      >
-      <button class="btn" @click="createPost">Создать</button>
-    </form>
-    <div class="post" v-bind:key="post.id" v-for="post in posts">
-      <div><strong>Название:</strong> {{post.title}}</div>
-      <div><strong>Описание:</strong> {{post.body}}</div>
-    </div>
+  <div class="app">
+    <h1>Страница с постами</h1>
+    <my-button @click="showDialog" style="margin: 15px 0">
+      Создать пост
+    </my-button> 
+    <my-dialog v-model:show="dialogVisible">
+      <post-form
+        @create="createPost"
+      />
+    </my-dialog>
+
+    <post-list
+      :posts="posts"
+      @remove="removePost"
+    />
+  
   </div>
 </template>
 
 <script>
+import PostForm from "@/components/PostForm";
+import PostList from "@/components/PostList";
+import MyDialog from "./components/UI/MyDialog.vue";
+import MyButton from "./components/UI/MyButton.vue";
+
 export default {
+  components: {
+    PostList,
+    PostForm,
+    MyDialog,
+    MyButton
+},
   data() {
     return {
       posts: [
@@ -33,19 +38,19 @@ export default {
         {id: 2, title: 'Vue 2', body: 'Description post 2'},
         {id: 3, title: 'Vue 3', body: 'Description post 3'},
       ],
-      title: '',
-      body: ''
+      dialogVisible: false
     }
   },
   methods: {
-    createPost() {
-      const newPost = {
-        id: Date.now(),
-        title: this.title,
-        body: this.body
-      }
-
-      this.posts.push(newPost);
+    createPost(post) {
+      this.posts.push(post);
+      this.dialogVisisble = false;
+    },
+    removePost(post) {
+      this.posts = this.posts.filter(p => p.id !== post.id)
+    },
+    showDialog() {
+      this.dialogVisible = true;
     }
   }  
 }
@@ -60,37 +65,5 @@ export default {
 
 .app {
   padding: 20px;
-}
-
-.post {
-  padding: 15px;
-  margin-top: 15px;
-  border: 2px solid teal;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-
-}
-.input {
-  width: 100%;
-
-  padding: 10px 15px;
-  margin-top: 15px;
-
-  border: 1px solid teal;
-}
-
-.btn {
-  align-self: right;
-
-  margin-top: 15px;
-  padding: 10px 15px;
-
-  border: 1px solid teal;
-
-  background: none;
-  color: teal;
 }
 </style>
