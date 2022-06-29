@@ -4,6 +4,7 @@
     <div class="navbar__btns">
       <my-button @click="$router.push('/posts')">Посты</my-button>
       <my-button @click="$router.push('/store')" style="margin-left: 20px">Посты через Vuex</my-button>
+      <my-button @click="$router.push('/composition')" style="margin-left: 20px">Посты Composition API</my-button>
       <my-button @click="$router.push('/about')" style="margin-left: 20px">О сайте</my-button>
 
 
