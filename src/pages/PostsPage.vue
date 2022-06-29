@@ -2,6 +2,7 @@
   <div>
     <h1>Страница с постами</h1>
     <my-input
+      v-focus
       v-model="searchQuery"
       placeholder="Поиск по названию"
     >
@@ -30,7 +31,7 @@
       v-if="!isPostLoading"
     />
     <div v-else>Идет Загрузка...</div>
-    <div ref="observer" class="observer"></div>
+    <div v-intersection="loadMorePosts" class="observer"></div>
     <!-- <div class="page-wrapper">
       <div
         v-for="pageNumber in totalPages"
@@ -128,7 +129,7 @@ export default {
   },
   mounted() {
     this.fetchPosts();
-    const options = {
+    /* const options = {
       rootMargin: '0px',
       threshold: 1.0
     }
@@ -139,7 +140,7 @@ export default {
 
     }
     const observer = new IntersectionObserver(callback, options)
-    observer.observe(this.$refs.observer);
+    observer.observe(this.$refs.observer); */
   },
   computed: {
     sortedPosts() {
